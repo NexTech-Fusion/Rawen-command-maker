@@ -212,6 +212,11 @@ export async function hideCursorContent(): Promise<void> {
     await codeExec(code);
 }
 
+export async function playAudio(urlOrArrayBufferStr: string, isArrayBuffer?: boolean): Promise<void> {
+    const code = `await playAudio(\`${urlOrArrayBufferStr}\`, ${isArrayBuffer});`;
+    await codeExec(code);
+}
+
 export interface ExternalCodeRequest {
     key: string;
     code: string;
