@@ -192,9 +192,21 @@ export async function pasteText(text: string): Promise<void> {
 }
 
 // define an area by dragging the mouse
-export async function getAreaData(): Promise<void> {
-    const code = `return await getAreaData();`;
-    return await codeExec(code);
+export async function markArea(): Promise<{
+    fileBuffer: Buffer,
+    captureRect: { x: number, y: number, width: number, height: number }
+}> {
+    const code = `return await markArea();`;
+    const result = await codeExec(code);
+    const buffer = Buffer.from(JSON.parse(result.fileBuffer));
+    return { fileBuffer: buffer, captureRect: result.captureRect };
+}
+
+export async function getAreaBuffer(x: number, y: number, width: number, height: number): Promise<Buffer> {
+    const code = `return await getAreaBuffer(${x}, ${y}, ${width}, ${height});`;
+    const result = await codeExec(code);
+    const buffer = Buffer.from(JSON.parse(result.fileBuffer));
+    return buffer;
 }
 
 export async function openNewWindow(htmlOrFilePath: string, options?: BrowserWindowOptions): Promise<void> {
