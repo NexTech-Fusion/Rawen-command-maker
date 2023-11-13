@@ -85,7 +85,19 @@ export async function submitPrompt(text?: string): Promise<void> {
     await codeExec(code);
 }
 
-export async function executeCommand(input: string, cmdId: string): Promise<void> {
+export async function getKeyValues(): Promise<KeyValueSetting[]> {
+    const code = `return await getKeyValues();`;
+    const keyValues = await codeExec(code);
+    return keyValues;
+}
+
+export async function getCommands(): Promise<CommandModel[]> {
+    const code = `return await getCommands();`;
+    const commands = await codeExec(code);
+    return commands;
+}
+
+export async function executeCommand<T>(input: string, cmdId: string): Promise<T> {
     const code = `return await execCommand(\`${input}\`, \`${cmdId}\`);`;
     return await codeExec(code);
 }
@@ -264,4 +276,20 @@ export interface LlmResultModel {
     html?: string[];
     logs?: string[];
     inlineElements?: any[];
+}
+
+export interface CommandModel {
+    id: string;
+    name: string;
+}
+export interface KeyValueSetting {
+    id: string | DefaultKeys;
+    name: string;
+    values: any; // { [key: string]: any };
+    isDefault?: boolean;
+}
+
+export enum DefaultKeys {
+    ALEPH = "ALEPH",
+    OPENAI = "OPENAI"
 }
